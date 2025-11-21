@@ -1,0 +1,732 @@
+<?php 
+
+class Process_model extends CI_Model
+{
+    public function getuserbyuser($userid)
+    {
+        $this->db->select('userid, name, deptid,golru');
+        $this->db->from('userinfo');
+        $this->db->where_in('userid', $userid);
+        /*if (is_array($userid))
+        {
+            $this->db->group_start();
+            $ids_chunk = array_chunk($userid,25);
+            foreach($ids_chunk as $s_ids)
+            {
+                $this->db->or_where_in('userid', $s_ids);
+            }
+            $this->db->group_end();
+        } else {
+            $this->db->where_in('userid', $userid);
+        }*/
+        return $this->db->get();
+    }
+
+    public function getuser($areaid)
+    {
+        $this->db->select('a.userid, a.name');
+		$this->db->from('userinfo a');
+		$this->db->join('userinfo_attarea b', 'a.userid=b.userid');
+
+		$this->db->where_in('b.areaid', $areaid);
+        /*if (is_array($areaid))
+        {
+            $this->db->group_start();
+            $ids_chunk = array_chunk($areaid,25);
+            foreach($ids_chunk as $s_ids)
+            {
+                $this->db->or_where_in('b.areaid', $s_ids);
+            }
+            $this->db->group_end();
+        } else {
+            $this->db->where_in('b.areaid', $areaid);
+        }*/
+
+		$this->db->group_by('a.userid');
+		return $this->db->get();
+    }
+	
+	public function getuserbyorg($orgid,$stspeg=null,$jnspeg=null)
+    {
+        $this->db->select('userid, name, deptid,golru');
+		$this->db->from('userinfo');
+
+		$this->db->where_in('deptid', $orgid);
+        /*if (is_array($orgid))
+        {
+            $this->db->group_start();
+            $ids_chunk = array_chunk($orgid,25);
+            foreach($ids_chunk as $s_ids)
+            {
+                $this->db->or_where_in('deptid', $s_ids);
+            }
+            $this->db->group_end();
+        } else {
+            $this->db->where_in('deptid', $orgid);
+        }*/
+        if ($stspeg != null)
+        {
+            $this->db->where_in('jftstatus', $stspeg);
+        }
+        if ($jnspeg != null)
+        {
+            $this->db->where_in('jenispegawai', $jnspeg);
+        }
+		return $this->db->get();
+    }
+
+    public function getuserall($stspeg=null)
+    {
+        $this->db->select('userid, name, deptid,golru');
+        $this->db->from('userinfo');
+        //$this->db->where_in('deptid', $orgid);
+        if ($stspeg != null)
+        {
+            $this->db->where_in('jftstatus', $stspeg);
+        }
+        return $this->db->get();
+    }
+	
+	public function getuserbyorgemail($orgid)
+    {
+        $sql = "select userid, name, deptid from userinfo ";
+		$s = array();
+		foreach($orgid as $ar)
+			$s[] = "'".$ar."'";	
+		$sql .= "where deptid in (".implode(',', $s).") and active is null";
+		
+		return $this->db->query($sql);
+    }
+
+    public function getshift($orgid, $datestart, $dateend)
+    {
+        $this->db->from('view_rosterdetails');
+        $this->db->where('rosterdate >=', date('Y-m-d', $datestart));
+        $this->db->where('rosterdate <=', date('Y-m-d', $dateend));
+        $this->db->where_in('deptid', $orgid);
+        /*if (is_array($orgid))
+        {
+            $this->db->group_start();
+            $ids_chunk = array_chunk($orgid,25);
+            foreach($ids_chunk as $s_ids)
+            {
+                $this->db->or_where_in('deptid', $s_ids);
+            }
+            $this->db->group_end();
+        } else {
+            $this->db->where_in('deptid', $orgid);
+        }*/
+
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+	public function getuserorg($areaid, $deptid)
+    {
+        $this->db->select('a.userid, a.name');
+		$this->db->from('userinfo a');
+		$this->db->join('userinfo_attarea b', 'a.userid=b.userid');
+		$this->db->where_in('b.areaid', $areaid);
+        /*if (is_array($areaid))
+        {
+            $this->db->group_start();
+            $ids_chunk = array_chunk($areaid,25);
+            foreach($ids_chunk as $s_ids)
+            {
+                $this->db->or_where_in('b.areaid', $s_ids);
+            }
+            $this->db->group_end();
+        } else {
+            $this->db->where_in('b.areaid', $areaid);
+        }*/
+
+		$this->db->where_in('a.deptid', $deptid);
+
+        /*if (is_array($deptid))
+        {
+            $this->db->group_start();
+            $ids_chunk = array_chunk($deptid,25);
+            foreach($ids_chunk as $s_ids)
+            {
+                $this->db->or_where_in('a.deptid', $s_ids);
+            }
+            $this->db->group_end();
+        } else {
+            $this->db->where_in('a.deptid', $deptid);
+        }*/
+
+
+		$this->db->group_by('a.userid');
+		return $this->db->get();
+    }
+	
+
+	public function getshiftuserid($userid, $datestart, $dateend,$stspeg=null)
+    {
+		$this->db->from('view_rosterdetails');
+		$this->db->where('rosterdate >=', date('Y-m-d', $datestart));
+		$this->db->where('rosterdate <=', date('Y-m-d', $dateend));
+		$this->db->where_in('userid', $userid);
+        /*if (is_array($userid))
+        {
+            $this->db->group_start();
+            $ids_chunk = array_chunk($userid,25);
+            foreach($ids_chunk as $s_ids)
+            {
+                $this->db->or_where_in('userid', $s_ids);
+            }
+            $this->db->group_end();
+        } else {
+            $this->db->where_in('userid', $userid);
+        }*/
+
+        if ($stspeg != null)
+        {
+            $this->db->where_in('jftstatus', $stspeg);
+        }
+        //$this->db->limit(10);
+		return $this->db->get()->result();
+    }
+
+    public function getupacarauserid($userid, $datestart, $dateend,$stspeg=null)
+    {
+        $this->db->from('view_rosterdetails_upacara');
+        $this->db->where('rosterdate >=', date('Y-m-d', $datestart));
+        $this->db->where('rosterdate <=', date('Y-m-d', $dateend));
+        $this->db->where_in('userid', $userid);
+        /*if (is_array($userid))
+        {
+            $this->db->group_start();
+            $ids_chunk = array_chunk($userid,25);
+            foreach($ids_chunk as $s_ids)
+            {
+                $this->db->or_where_in('userid', $s_ids);
+            }
+            $this->db->group_end();
+        } else {
+            $this->db->where_in('userid', $userid);
+        }*/
+
+        if ($stspeg != null)
+        {
+            $this->db->where_in('jftstatus', $stspeg);
+        }
+        //$this->db->limit(10);
+        return $this->db->get()->result();
+    }
+
+    public function getmultishiftuserid($userid, $datestart, $dateend,$stspeg=null)
+    {
+        $this->db->from('view_rosterdetails_khusus');
+        $this->db->where('rosterdate >=', date('Y-m-d', $datestart));
+        $this->db->where('rosterdate <=', date('Y-m-d', $dateend));
+        $this->db->where_in('userid', $userid);
+        /*if (is_array($userid))
+        {
+            $this->db->group_start();
+            $ids_chunk = array_chunk($userid,25);
+            foreach($ids_chunk as $s_ids)
+            {
+                $this->db->or_where_in('userid', $s_ids);
+            }
+            $this->db->group_end();
+        } else {
+            $this->db->where_in('userid', $userid);
+        }*/
+
+        if ($stspeg != null)
+        {
+            $this->db->where_in('jftstatus', $stspeg);
+        }
+        //$this->db->limit(10);
+        return $this->db->get()->result();
+    }
+	
+	public function getshiftorgid($orgid, $datestart, $dateend,$stspeg=null)
+    {
+		$this->db->from('view_rosterdetails');
+		$this->db->where('rosterdate >=', date('Y-m-d', $datestart));
+		$this->db->where('rosterdate <=', date('Y-m-d', $dateend));
+		$this->db->where_in('deptid', $orgid);
+        /*if (is_array($orgid))
+        {
+            $this->db->group_start();
+            $ids_chunk = array_chunk($orgid,25);
+            foreach($ids_chunk as $s_ids)
+            {
+                $this->db->or_where_in('deptid', $s_ids);
+            }
+            $this->db->group_end();
+        } else {
+            $this->db->where_in('deptid', $orgid);
+        }*/
+        if ($stspeg != null)
+        {
+            $this->db->where_in('jftstatus', $stspeg);
+        }
+		$query = $this->db->get();
+		return $query->result();
+    }
+
+    public function getmultishiftorgid($orgid, $datestart, $dateend,$stspeg=null)
+    {
+        $this->db->from('view_rosterdetails_khusus');
+        $this->db->where('rosterdate >=', date('Y-m-d', $datestart));
+        $this->db->where('rosterdate <=', date('Y-m-d', $dateend));
+        $this->db->where_in('deptid', $orgid);
+        /*if (is_array($orgid))
+        {
+            $this->db->group_start();
+            $ids_chunk = array_chunk($orgid,25);
+            foreach($ids_chunk as $s_ids)
+            {
+                $this->db->or_where_in('deptid', $s_ids);
+            }
+            $this->db->group_end();
+        } else {
+            $this->db->where_in('deptid', $orgid);
+        }*/
+
+        if ($stspeg != null)
+        {
+            $this->db->where_in('jftstatus', $stspeg);
+        }
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function getupacaraorgid($orgid, $datestart, $dateend,$stspeg=null)
+    {
+        $this->db->from('view_rosterdetails_upacara');
+        $this->db->where('rosterdate >=', date('Y-m-d', $datestart));
+        $this->db->where('rosterdate <=', date('Y-m-d', $dateend));
+        $this->db->where_in('deptid', $orgid);
+        /*if (is_array($orgid))
+        {
+            $this->db->group_start();
+            $ids_chunk = array_chunk($orgid,25);
+            foreach($ids_chunk as $s_ids)
+            {
+                $this->db->or_where_in('deptid', $s_ids);
+            }
+            $this->db->group_end();
+        } else {
+            $this->db->where_in('deptid', $orgid);
+        }*/
+        if ($stspeg != null)
+        {
+            $this->db->where_in('jftstatus', $stspeg);
+        }
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function getshiftorgidall($datestart, $dateend,$stspeg=null)
+    {
+        $this->db->from('view_rosterdetails');
+        $this->db->where('rosterdate >=', date('Y-m-d', $datestart));
+        $this->db->where('rosterdate <=', date('Y-m-d', $dateend));
+
+        //$this->db->where_in('deptid', $orgid);
+        if ($stspeg != null)
+        {
+            $this->db->where_in('jftstatus', $stspeg);
+        }
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+
+
+    public function getshiftgroupdetailsorg($orgid, $datestart, $dateend)
+    {
+        $this->db->select('a.userid, rosterdate, attendance, notes, b.emptype');
+        $this->db->from('groupshiftdetails a');
+        $this->db->join('userinfo b', 'a.userid=b.userid', 'left');
+        $this->db->where('rosterdate >=', date('Y-m-d', $datestart));
+        $this->db->where('rosterdate <=', date('Y-m-d', $dateend));
+        $this->db->where_in('deptid', $orgid);
+        /*if (is_array($orgid))
+        {
+            $this->db->group_start();
+            $ids_chunk = array_chunk($orgid,25);
+            foreach($ids_chunk as $s_ids)
+            {
+                $this->db->or_where_in('deptid', $s_ids);
+            }
+            $this->db->group_end();
+        } else {
+            $this->db->where_in('deptid', $orgid);
+        }*/
+
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+	public function getshiftgroupdetails($userid, $datestart, $dateend)
+    {
+		$this->db->select('a.userid, rosterdate, attendance, notes, b.emptype');
+		$this->db->from('groupshiftdetails a');
+		$this->db->join('userinfo b', 'a.userid=b.userid', 'left');
+		$this->db->where('rosterdate >=', date('Y-m-d', $datestart));
+		$this->db->where('rosterdate <=', date('Y-m-d', $dateend));
+		$this->db->where_in('a.userid', $userid);
+        /*if (is_array($userid))
+        {
+            $this->db->group_start();
+            $ids_chunk = array_chunk($userid,25);
+            foreach($ids_chunk as $s_ids)
+            {
+                $this->db->or_where_in('a.userid', $s_ids);
+            }
+            $this->db->group_end();
+        } else {
+            $this->db->where_in('a.userid', $userid);
+        }*/
+
+		$query = $this->db->get();
+		return $query->result();
+    }
+
+    public function getawal($userid, $opt1, $opt2, $isreguler)
+    {
+        $this->db->select_min('checktime');
+        $this->db->from('checkinout');
+        $this->db->join('iclock','iclock.sn=checkinout.sn');
+        $this->db->where('userid', $userid);
+        /* $this->db->where('checktime >=', $opt1);
+        $this->db->where('checktime <=', $opt2); */
+        $this->db->where('checktime BETWEEN "'. $opt1. '" and "'. $opt2.'"');
+        $this->db->where('is_reguler ', $isreguler);
+        $query = $this->db->get();
+        //echo $this->db->last_query();
+        if($query->num_rows()==1)
+        {
+            return $query->row()->checktime;
+        }
+        return false;
+    }
+
+	public function getgroupshift()
+    {
+		$this->db->from('view_groupdetails');
+		$query = $this->db->get();
+		return $query->result();
+    }
+    
+	public function adatranslog($userid, $tanggal)
+	{
+		$this->db->from('checkinout');
+		$this->db->where('userid', $userid);
+		$this->db->where('date(checktime)', $tanggal);
+		$query = $this->db->get();		
+		if($query->num_rows()>=1)
+		{
+			return true;
+		}
+		return false;	
+	}
+	
+	public function getakhir($userid, $opt1, $opt2, $isreguler=1)
+    {
+		$this->db->select_max('checktime');
+		$this->db->from('checkinout');
+        $this->db->join('iclock','iclock.sn=checkinout.sn');
+		$this->db->where('userid', $userid);		
+		$this->db->where('checktime >=', $opt1);		
+		$this->db->where('checktime <=', $opt2);
+        $this->db->where('is_reguler ', $isreguler);
+		$query = $this->db->get();		
+		if($query->num_rows()==1)
+		{
+			return $query->row()->checktime;
+		}
+		return false;	
+    }
+
+	
+	public function getakhirsplit1($userid, $tanggal)
+    {
+		$this->db->select_min('checktime');
+		$this->db->from('checkinout');
+		$this->db->where('userid', $userid);		
+		$this->db->where('date(checktime)', $tanggal);		
+		$this->db->where('checktype', 1);				
+		$query = $this->db->get();		
+		if($query->num_rows()==1)
+		{
+			return $query->row()->checktime;
+		}
+		return false;	
+    }
+	
+	public function getakhirsplit2($userid, $tanggal)
+    {
+		$this->db->select_min('checktime');
+		$this->db->from('checkinout');
+		$this->db->where('userid', $userid);		
+		$this->db->where('date(checktime)', $tanggal);		
+		$this->db->where('checktype', 5);				
+		$query = $this->db->get();		
+		if($query->num_rows()==1)
+		{
+			return $query->row()->checktime;
+		}
+		return false;	
+    }
+	
+	public function savetemp($data)
+	{
+		if($this->db->insert('process', $data))
+			{
+				return true;
+			}
+			return false;
+	}	
+	
+	public function cekotsetting()
+	{
+		$this->db->select('field_id, field_value');
+		$this->db->from('general_setting');
+		$query = $this->db->get();
+		return $query;
+	}
+	
+	public function cekotafter()
+	{
+		$this->db->from('general_setting');
+		$this->db->where('field_name', 'ot_after');
+		$query = $this->db->get();
+		if($query->row()->field_value == 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	public function cekholiday($datestart=null, $dateend=null)
+	{
+		$this->db->from('holiday');
+		if(!empty($orgid)) {
+			$s = array();
+			foreach($orgid as $ar)
+				$s[] = (string)$ar;	
+			$this->db->where_in('deptid', implode(',', $s));
+		}
+		$this->db->or_where('deptid', '1');
+		return $this->db->get();
+	}
+
+    public function cekdefaholiday($tanggalinput)
+    {
+        $th= date("Y",strtotime($tanggalinput));
+        $this->db->select("id,STR_TO_DATE(CONCAT(startdate,'-$th'), '%d-%m-%Y') AS startdate,
+                            STR_TO_DATE(CONCAT(enddate,'-$th'), '%d-%m-%Y') AS enddate,info,deptid,flag");
+        $this->db->from('defa_holiday');
+        if(!empty($orgid)) {
+            $s = array();
+            foreach($orgid as $ar)
+                $s[] = (string)$ar;
+            $this->db->where_in('deptid', implode(',', $s));
+        }
+        $this->db->or_where('deptid', '1');
+        return $this->db->get();
+    }
+	
+	public function getedit($userid, $tgl)
+	{
+		/* $this->db->from('checkinout');
+		$this->db->where('userid', $userid);
+		$this->db->where('checktime', $tgl);
+		$this->db->where('checktype', '20');
+		$query = $this->db->get();
+		if($query->num_rows()==1) {
+			return 1;
+		} */
+		return 0;		
+	}
+	
+	public function getprocesseddata($awal, $akhir) 
+	{
+		$this->db->select('id, userid, date_shift');
+		$this->db->from('process');
+		$this->db->where('date_shift >=', date('Y-m-d', $awal));
+		$this->db->where('date_shift <=', date('Y-m-d', $akhir));
+		$query = $this->db->get();
+		if($query->num_rows()>=1) {
+			return $query;
+		}
+		return false;
+	}
+	
+	public function getprocesseddataid($userid, $awal, $akhir) 
+	{
+		$this->db->select('id, userid, date_shift');
+		$this->db->from('process');
+		$this->db->where('userid', $userid);
+		$this->db->where('date_shift >=', date('Y-m-d', $awal));
+		$this->db->where('date_shift <=', date('Y-m-d', $akhir));
+		$query = $this->db->get();
+		if($query->num_rows()>=1) {
+			return $query;
+		}
+		return false;
+	}
+	
+	public function getprocesssetting() {
+		$this->db->select('value');
+		$this->db->from('process_setting');
+		$this->db->where('id', 1);
+		$query = $this->db->get();
+		if($query->num_rows()==1)
+		{
+			return $query->row()->value;
+		}
+		return false;
+	}
+
+    public function getawalpmd($userid, $opt1, $opt2)
+    {
+        $this->db->select_min('checktime');
+        $this->db->from('checkinout');
+        $this->db->where('userid', $userid);
+        $this->db->where('checktime >=', $opt1);
+        $this->db->where('checktime <=', $opt2);
+        $this->db->where('checktype', '0');
+        $query = $this->db->get();
+        if($query->num_rows()==1)
+        {
+            return $query->row()->checktime;
+        }
+        return false;
+    }
+
+    public function getakhirpmd($userid, $opt1, $opt2)
+    {
+        $this->db->select_max('checktime');
+        $this->db->from('checkinout');
+        $this->db->where('userid', $userid);
+        $this->db->where('checktime >=', $opt1);
+        $this->db->where('checktime <=', $opt2);
+        $this->db->where('checktype', '1');
+        $query = $this->db->get();
+        if($query->num_rows()==1)
+        {
+            return $query->row()->checktime;
+        }
+        return false;
+    }
+
+    public function getawalgroup($userid, $opt1)
+    {
+        $this->db->select_min('checktime');
+        $this->db->from('checkinout');
+        $this->db->where('userid', $userid);
+        $this->db->where('date(checktime)', $opt1);
+        $query = $this->db->get();
+        if($query->num_rows()==1)
+        {
+            return $query->row()->checktime;
+        }
+        return false;
+    }
+
+    public function getakhirgroup($userid, $opt1)
+    {
+        $this->db->select_max('checktime');
+        $this->db->from('checkinout');
+        $this->db->where('userid', $userid);
+        $this->db->where('date(checktime)', $opt1);
+        $query = $this->db->get();
+        if($query->num_rows()==1)
+        {
+            return $query->row()->checktime;
+        }
+        return false;
+    }
+
+    public function getawalsplit1($userid, $tanggal)
+    {
+        $this->db->select_min('checktime');
+        $this->db->from('checkinout');
+        $this->db->where('userid', $userid);
+        $this->db->where('date(checktime)', $tanggal);
+        $this->db->where('checktype', 0);
+        $query = $this->db->get();
+        if($query->num_rows()==1)
+        {
+            return $query->row()->checktime;
+        }
+        return false;
+    }
+
+    public function getawalsplit2($userid, $tanggal)
+    {
+        $this->db->select_min('checktime');
+        $this->db->from('checkinout');
+        $this->db->where('userid', $userid);
+        $this->db->where('date(checktime)', $tanggal);
+        $this->db->where('checktype', 4);
+        $query = $this->db->get();
+        if($query->num_rows()==1)
+        {
+            return $query->row()->checktime;
+        }
+        return false;
+    }
+    /* untuk semua proses pegawai*/
+    public function getshiftallorg($datestart, $dateend,$stspeg=null)
+    {
+        $this->db->from('view_rosterdetails');
+        $this->db->where('rosterdate >=', date('Y-m-d', $datestart));
+        $this->db->where('rosterdate <=', date('Y-m-d', $dateend));
+        /*$this->db->where_in('deptid', $orgid);
+        if (is_array($orgid))
+        {
+            $this->db->group_start();
+            $ids_chunk = array_chunk($orgid,25);
+            foreach($ids_chunk as $s_ids)
+            {
+                $this->db->or_where_in('deptid', $s_ids);
+            }
+            $this->db->group_end();
+        } else {
+            $this->db->where_in('deptid', $orgid);
+        }*/
+        if ($stspeg != null)
+        {
+            $this->db->where_in('jftstatus', $stspeg);
+        }
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function getuserbyallorg($stspeg=null,$jnspeg=null)
+    {
+        $this->db->select('userid, name, deptid,golru');
+        $this->db->from('userinfo');
+
+        /*$this->db->where_in('deptid', $orgid);
+        if (is_array($orgid))
+        {
+            $this->db->group_start();
+            $ids_chunk = array_chunk($orgid,25);
+            foreach($ids_chunk as $s_ids)
+            {
+                $this->db->or_where_in('deptid', $s_ids);
+            }
+            $this->db->group_end();
+        } else {
+            $this->db->where_in('deptid', $orgid);
+        }*/
+        if ($stspeg != null)
+        {
+            $this->db->where_in('jftstatus', $stspeg);
+        }
+        if ($jnspeg != null)
+        {
+            $this->db->where_in('jenispegawai', $jnspeg);
+        }
+        return $this->db->get();
+    }
+    /* end untuk semua proses pegawai*/
+}

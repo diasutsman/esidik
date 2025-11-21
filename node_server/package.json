@@ -1,0 +1,21 @@
+{
+  "name": "esidik",
+  "version": "0.0.1",
+  "description": "Aplikasi client untuk Readltime Display Presensi",
+  "keywords": [
+    "eSidik",
+    "Absensi Kemendagri",
+    "Kemendagri"
+  ],
+  "author": "MochamadSyena",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "express": "^4.15.2",
+    "node-mysql-wrapper": "^2.9.3",
+    "node-windows": "^0.1.14",
+    "pg": "^6.1.5",
+    "socket.io": "^1.7.3",
+    "sockjs": "^0.3.18"
+  }
+}

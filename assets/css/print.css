@@ -1,0 +1,86 @@
+html, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, p, blockquote, th, td {
+    margin: 0;
+    padding: 0;
+}
+
+html, img, body {
+    border: 0;
+}
+
+address, caption, cite, code, dfn, em, strong, th, var {
+    font-style: normal;
+    font-weight: normal;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+caption, th {
+    text-align: left;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 125%;
+}
+
+table {
+    width: 100%;
+    text-align: left;
+    font-size: 11px;
+    font-family: arial;
+    border-collapse: collapse;
+}
+
+table th {
+    font-weight: bold;
+	text-align:	center;
+    padding: 4px 3px 4px 5px;
+    border: 1px solid #121212;
+    background-color: #ededed;
+}
+
+table tr.odd {
+    background-color: #ffffff;
+}
+
+table tr.even {
+    background-color: #f9f9f9;
+}
+
+table tr.abang{
+	color: red;
+}
+
+table td {
+    padding: 4px 3px 4px 5px;
+    border-style: none solid solid;
+    border-width: 1px;
+    border-color: #000000;
+}
+
+
+table td.recap {
+    padding: 2px 2px 2px 2px;
+    border-style: none;
+    border-width: 0px;
+}
+
+.head {
+    width: 100%;
+    text-align: left;
+    font-size: 12px;
+    font-family: arial;
+    font-weight: bold;
+    border: 0px;
+}
+
+@media print {
+      body {
+        margin: 0;
+        padding: 0;
+    }
+      div -noprint {
+        display: none;
+    }
+}

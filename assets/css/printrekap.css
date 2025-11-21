@@ -1,0 +1,280 @@
+html, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, p, blockquote, th, td {
+    margin: 0;
+    padding: 0;
+}
+
+html, img, body {
+    border: 0;
+}
+
+address, caption, cite, code, dfn, em, strong, th, var {
+    font-style: normal;
+    font-weight: normal;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+caption, th {
+    text-align: left;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+}
+
+table {
+    text-align: left;
+    font-size: 11px;
+    font-family: arial;
+    border-collapse: collapse;
+}
+
+table th {
+    font-weight: bold;
+	text-align:	center;
+    padding: 4px 3px 4px 5px;
+    border: 1px solid #000000;
+    /*background-color: #ededed;*/
+}
+
+table tr.odd {
+    background-color: #ffffff;
+}
+
+table tr.even {
+    background-color: #f9f9f9;
+}
+
+table tr.abang{
+	color: red;
+}
+
+table td {
+    padding: 4px 3px 4px 5px;
+    border-style: none solid solid;
+    border-width: 1px;
+    border-color: #000000;
+}
+
+
+table td.recap {
+    padding: 2px 2px 2px 2px;
+    border-style: none;
+    border-width: 0px;
+}
+
+table td.P {
+    background-color: #00ff00;
+	color: #000000;
+}
+
+table th.P {
+    background-color: #00ff00;
+	color: #000000;
+}
+
+table td.A {
+    background-color: #808080;
+	color: #FFFFFF;
+}
+
+table th.A {
+    background-color: #808080;
+	color: #FFFFFF;
+}
+
+table td.OFF {
+    background-color: #000000;
+	color: #FFFFFF;
+}
+
+table th.OFF {
+    background-color: #000000;
+	color: #FFFFFF;
+}
+
+table td.DL {
+    background-color: #bf8f00;
+	color: #000000;
+}
+
+table th.DL {
+    background-color: #bf8f00;
+	color: #000000;
+}
+
+table td.C {
+    background-color: #ffff00;
+	color: #ff0000;
+}
+
+table th.C {
+    background-color: #ffff00;
+	color: #ff0000;
+}
+
+table td.S {
+    background-color: #ffff00;
+	color: #ff0000;
+}
+
+table th.S {
+    background-color: #ffff00;
+	color: #ff0000;
+}
+
+table td.PDK {
+    background-color: #00b0f0;
+	color: #FFFFFF;
+}
+
+table th.PDK {
+    background-color: #00b0f0;
+	color: #FFFFFF;
+}
+
+table td.TB {
+    background-color: #00b0f0;
+	color: #FFFFFF;
+}
+
+table th.TB {
+    background-color: #00b0f0;
+	color: #FFFFFF;
+}
+
+table td.L {
+    background-color: #ff0000;
+	color: #FFFFFF;
+}
+
+table th.L {
+    background-color: #ff0000;
+	color: #FFFFFF;
+}
+
+.head table {
+    text-align: left;
+    font-size: 13px;
+    font-family: arial;
+    border: 0px;
+}
+
+@media print {
+      body {
+        margin: 0;
+        padding: 0;
+    }
+      div -noprint {
+        display: none;
+    }
+}
+
+table td.HDR {
+    background-color: #00ff00;
+    color: #000000;
+}
+
+table th.HDR {
+    background-color: #00ff00;
+    color: #000000;
+}
+
+table td.ALP {
+    background-color: #808080;
+    color: #FFFFFF;
+}
+
+table th.ALP {
+    background-color: #808080;
+    color: #FFFFFF;
+}
+
+table td.OFF {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+table th.OFF {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+table td.DSL {
+    background-color: #bf8f00;
+    color: #000000;
+}
+
+table th.DSL {
+    background-color: #bf8f00;
+    color: #000000;
+}
+
+table td.CTI {
+    background-color: #ffff00;
+    color: #ff0000;
+}
+
+table th.CTI {
+    background-color: #ffff00;
+    color: #ff0000;
+}
+
+table td.SKT {
+    background-color: #ffbc42;
+    color: #7671ff;
+}
+
+table th.SKT {
+    background-color: #ffbc42;
+    color: #7671ff;
+}
+
+table td.PDK {
+    background-color: #00b0f0;
+    color: #FFFFFF;
+}
+
+table th.PDK {
+    background-color: #00b0f0;
+    color: #FFFFFF;
+}
+
+table td.TB {
+    background-color: #98f0d0;
+    color: #5d3590;
+}
+
+table th.TB {
+    background-color: #98f0d0;
+    color: #5d3590;
+}
+
+table td.LBR {
+    background-color: #ff0000;
+    color: #FFFFFF;
+}
+
+table th.LBR {
+    background-color: #ff0000;
+    color: #FFFFFF;
+}
+
+.head {
+    width: 100%;
+    text-align: left;
+    font-size: 12px;
+    font-family: arial;
+    font-weight: bold;
+    border: 0px;
+}
+
+table th {
+    font-weight: bold;
+    text-align:	center;
+    padding: 4px 3px 4px 5px;
+    border: 1px solid #121212;
+    background-color: #ededed;
+}
